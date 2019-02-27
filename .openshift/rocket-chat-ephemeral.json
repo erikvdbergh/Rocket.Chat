@@ -94,7 +94,8 @@
                                 ],
                                 "resources": {
                                     "limits": {
-                                        "memory": "${MEMORY_LIMIT}"
+                                        "memory": "${DB_MEMORY_LIMIT}",
+                                        "cpu": "${CPU_LIMIT}"
                                     }
                                 },
                                 "volumeMounts": [
@@ -254,7 +255,12 @@
                                         "value": "mongodb://${MONGODB_USER}:${MONGODB_PASSWORD}@mongodb:27017/${MONGODB_DATABASE}"
                                     }
                                 ],
-                                "resources": {},
+                                "resources": {
+                                    "limits": {
+                                        "memory": "${SERVER_MEMORY_LIMIT}",
+                                        "cpu": "${CPU_LIMIT}"
+                                    }
+                                },
                                 "volumeMounts": [
                                     {
                                         "name": "rocketchat-volume-1",
@@ -389,10 +395,22 @@
     ],
     "parameters": [
         {
-            "name": "MEMORY_LIMIT",
+            "name": "DB_MEMORY_LIMIT",
             "displayName": "Memory Limit",
-            "description": "Maximum amount of memory the container can use.",
+            "description": "Maximum amount of memory the mongodb container can use.",
             "value": "512Mi"
+        },
+        {
+            "name": "SERVER_MEMORY_LIMIT",
+            "displayName": "Memory Limit",
+            "description": "Maximum amount of memory the rocketchat container can use.",
+            "value": "384Mi"
+        },
+        {
+            "name": "CPU_LIMIT",
+            "displayName": "Cpu Limit",
+            "description": "Maximum amount of cpu the rocketchat cand mongodb containers can use.",
+            "value": "250m"
         },
         {
             "name": "DATABASE_SERVICE_NAME",
@@ -407,7 +425,8 @@
             "description": "Username for MongoDB user that will be used for accessing the database.",
             "generate": "expression",
             "from": "user[A-Z0-9]{3}",
-            "required": true
+            "required": true,
+            "value": "mongo_admin"
         },
         {
             "name": "MONGODB_PASSWORD",
