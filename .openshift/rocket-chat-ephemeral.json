@@ -318,6 +318,7 @@
                 }
             },
             "spec": {
+                "host": "${HOSTNAME}",
                 "to": {
                     "kind": "Service",
                     "name": "rocketchat"
@@ -394,6 +395,12 @@
         }
     ],
     "parameters": [
+        {
+            "name": "HOSTNAME",
+            "displayName": "Hostname",
+            "description": "Hostname that the route will point to",
+            "value": ""
+        },
         {
             "name": "DB_MEMORY_LIMIT",
             "displayName": "Memory Limit",

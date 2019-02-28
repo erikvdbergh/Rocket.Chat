@@ -105,7 +105,8 @@
                                 ],
                                 "resources": {
                                     "limits": {
-                                        "memory": "${MEMORY_LIMIT}"
+                                        "memory": "${DB_MEMORY_LIMIT}",
+                                        "cpu": "${CPU_LIMIT}"
                                     }
                                 },
                                 "volumeMounts": [
@@ -274,7 +275,11 @@
                                         "value": "mongodb://${MONGODB_USER}:${MONGODB_PASSWORD}@mongodb:27017/${MONGODB_DATABASE}"
                                     }
                                 ],
-                                "resources": {},
+                                "resources": {
+                                    "limits": {
+                                        "memory": "${SERVER_MEMORY_LIMIT}",
+                                        "cpu": "${CPU_LIMIT}"
+                                },
                                 "volumeMounts": [
                                     {
                                         "name": "rocketchat-volume-1",
@@ -332,6 +337,7 @@
                 }
             },
             "spec": {
+                "host": "${HOSTNAME}",
                 "to": {
                     "kind": "Service",
                     "name": "rocketchat"
@@ -409,10 +415,28 @@
     ],
     "parameters": [
         {
-            "name": "MEMORY_LIMIT",
+            "name": "HOSTNAME",
+            "displayName": "Hostname",
+            "description": "Hostname that the route will point to (leave empty to auto generate)",
+            "value": ""
+        },
+        {
+            "name": "DB_MEMORY_LIMIT",
             "displayName": "Memory Limit",
-            "description": "Maximum amount of memory the container can use.",
+            "description": "Maximum amount of memory the mongodb container can use.",
             "value": "512Mi"
+        },
+        {
+            "name": "SERVER_MEMORY_LIMIT",
+            "displayName": "Memory Limit",
+            "description": "Maximum amount of memory the rocketchat container can use.",
+            "value": "384Mi"
+        },
+        {
+            "name": "CPU_LIMIT",
+            "displayName": "Cpu Limit",
+            "description": "Maximum amount of cpu the rocketchat cand mongodb containers can use.",
+            "value": "250m"
         },
         {
             "name": "DATABASE_SERVICE_NAME",
